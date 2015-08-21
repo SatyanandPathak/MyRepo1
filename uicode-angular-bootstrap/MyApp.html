@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html ng-app="MyApplication">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="angular.min.js"></script>
+    <link rel="stylesheet" href="myCustom.css">
+   
+    <script src="myapp.js"></script>
+  </head>
+
+  <body style = "background-color:#f5f5f5">
+	<div id = "MainContent" class = "container panel col-lg padding-left fullWidth" style = "padding-left:0px;padding-right:0px;padding-bottom:0px">
+	
+	
+		<!-- Header -->
+		<div id = "ApplicationHeader" class = "navbar navbar-default" style = "text-align:center;background-color:#337ab7;margin-bottom:0px">
+	      <div class="modal-header text-center" style = "color:#ffffff">
+            <h1>Sample App</h1>
+		  </div>        
+		</div>
+		
+		
+		<div ng-controller = "LoginController" id = "LoginMain">
+			<div id = "LoginDiv" ng-show = "showLogin" class = "well alignWell" >
+				<div class = "ValidationError">{{ errorMessage }}</div>
+				<br/>
+				<br/>
+				<form name = "LoginForm">
+				<label class = "LogInPagelabelsAlign">Login</label>
+				<input type = "text" ng-model = "userName" placeholder = "userId" required />
+				<br/>
+				<br/>
+				<label class = "LogInPagelabelsAlign">Password</label>
+				<input type = "password" ng-model = "password" placeholder = "password" required />
+				<br/>
+				<br/>
+				<div class="form-group">
+					<div class="col-sm-8 col-md-offset-5">
+						<button type="submit" class="btn btn-primary" ng-click="submitForm()">Login</button>
+						<button type="submit" class="btn btn-primary" ng-click="registerForm()">Register</button>
+					</div>
+				</div>
+				</form>
+			</div>
+			
+			<div id = "Homepage" ng-show = "homepageDisplay">
+				<!-- This is Menu content tabs -->
+				<div id = "Menu" class="well" style = "padding-top:20px; margin-bottom:0px">
+					<div style = "width:80%;float:left">
+						<ul class="nav nav-pills">
+							<li class="active"><a data-toggle="pill" href="#" ng-click = "displayHome()">Home</a></li>
+							<li class="active"><a data-toggle="pill" href="#" ng-click = "displayCloudContent()">Create your own cloud</a></li>
+							<li class="active"><a data-toggle="pill" href="#" ng-click = "displayEditSettings()">Edit your Settings</a></li>
+							<li class="active"><a data-toggle="pill" href="#" ng-click = "displaypayments">Payments</a></li>
+							</ul>
+					</div>
+					<div>
+						Welcome {{ ajaxResponse.userName }} | <a href = "#" ng-click = "logout()">Logout</a>
+					</div>
+				</div>
+				
+			</div>	
+		</div>
+		<!-- End of LoginController -->
+	 
+		<div ng-controller = "RegisterController" id = "RegisterMain">
+			<div id = "RegisterDiv" class = "well alignWell display-none" ng-show = "showRegisterForm">
+				<label>All fields are mandatory and should be in proper format</label>
+				<div class = "ValidationError">
+				{{ errorMessage }}
+				</div>
+				<br/>
+				<br/>
+				<form name = "RegistrationForm" novalidate>
+					<label class = "LogInPagelabelsAlign">User Name</label>
+					<input type = "text" name = "newuserName" ng-model = "newuserName" placeholder = "Name"  ng-minlength=3 ng-maxlength=20 required>
+					<span style="color:red" ng-show="RegistrationForm.newuserName.$error.required">User Name is required.</span>
+					<span style="color:red" ng-show="RegistrationForm.newuserName.$error.minlength">User Name is required to be at least 3 characters.</span>
+					<span style="color:red" ng-show="RegistrationForm.newuserName.$error.maxlength">User Name cannot be more than 20 characters.</span>
+					<br/>
+					<br/>
+					<label class = "LogInPagelabelsAlign">Password</label>
+					<input type = "password" ng-model = "newpassword" name = "newpassword" placeholder = "password"  ng-minlength=3 ng-maxlength=20 required>
+					<span style="color:red" ng-show="RegistrationForm.newpassword.$error.required">Password is required.</span>
+					<span style="color:red" ng-show="RegistrationForm.newpassword.$error.minlength">Password is required to be at least 3 characters.</span>
+					<span style="color:red" ng-show="RegistrationForm.newpassword.$error.maxlength">Password cannot be more than 20 characters.</span>
+					<br/>
+					<br/>
+					<label class = "LogInPagelabelsAlign">Re-Enter Password</label>
+					<input type = "password" ng-model = "newrepassword" placeholder = "password" name = "newrepassword"  ng-minlength=3 ng-maxlength=20 required>
+					<span style="color:red" ng-show="RegistrationForm.newrepassword.$error.required">Please enter password</span>
+					<span style="color:red" ng-show="{{ passwordMismatch }}">Please enter password</span>
+					<span style="color:red" ng-show="RegistrationForm.newrepassword.$error.minlength">Password is required to be at least 3 characters.</span>
+					<span style="color:red" ng-show="RegistrationForm.newrepassword.$error.maxlength">Password cannot be more than 20 characters.</span>
+					<br/>
+					<br/>
+					<label class = "LogInPagelabelsAlign">Email Id</label>
+					<input type = "email" ng-model = "emailId" ng-pattern="word" placeholder = "sample@sample.com" name = "emailId"  required>
+					<span style="color:red" ng-show="RegistrationForm.emailId.$error.required">Email Id is required.</span>
+					<span class="ValidationError" ng-show="RegistrationForm.emailId.$error.email">Email not valid</span>		
+					<br/>
+					<br/>		
+					<label class = "LogInPagelabelsAlign">First Name</label>
+					<input type = "text" ng-model = "firstName" placeholder = "Satyanand" name = "firstName" required>
+					<span style="color:red" ng-show="RegistrationForm.firstName.$error.required">First name is required.</span>		
+					<br/>
+					<br/>	
+					<label class = "LogInPagelabelsAlign">last Name</label>
+					<input type = "text" ng-model = "lastName" placeholder = "Pathak" name = "lastName" required>
+					<span style="color:red" ng-show="RegistrationForm.lastName.$error.required">Last name is required.</span>
+					<div class="form-group">
+						<div class="col-sm-8 col-md-offset-5">
+							<button ng-disabled="RegistrationForm.newuserName.$error.required || RegistrationForm.newpassword.$error.required || RegistrationForm.newrepassword.$error.required || RegistrationForm.emailId.$error.required || RegistrationForm.emailId.$error.email || RegistrationForm.firstName.$error.required || RegistrationForm.firstName.$error.required" type="submit" class="btn btn-primary" ng-click="submitRegistration()">Submit Registration</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div id = "SuccesRegistration" ng-show = "showSuccessRegistration">
+				Registration is successful. <a href = "#" ng-click = "showLoginPage()">Click here</a> to log to login page.
+			</div>			
+		</div>	
+
+		
+	</div><!--  End of MainDiv -->
+    
+
+</body>
+
+</html>
